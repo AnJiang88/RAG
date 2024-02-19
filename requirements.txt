@@ -2,3 +2,7 @@ streamlit
 langchain
 sentence_transformers
 transformers
+pypdf
+torch
+faiss-cpu
+numpy
