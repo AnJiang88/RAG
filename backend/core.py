@@ -1,6 +1,5 @@
 import os
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.embeddings import HuggingFaceEmbeddings
+# from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 from langchain_community.llms import HuggingFacePipeline
 from langchain_community.document_loaders import PyPDFLoader
@@ -9,7 +8,8 @@ from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
-from langchain_openai import ChatOpenAI
+# from langchain_openai import OpenAIEmbeddings
+# from langchain_openai import ChatOpenAI
 
 
 
