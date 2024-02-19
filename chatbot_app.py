@@ -2,7 +2,7 @@ import streamlit as st
 from backend.core import run_llm, get_faiss_vectordb
 
 # Set the title for the Streamlit app.
-st.title("RAG Chatbot to query your own files\n:blue[Using FAISS vector database and Mistral-7B Large Language Model]")
+st.title("RAG Chatbot to query your own files\n:blue[Using FAISS vector database and GPT-2 Large Language Model]")
 
 # Allow the user to upload a file with supported extensions.
 uploaded_file = st.file_uploader("Upload an article", type=("txt", "md", "pdf"))
