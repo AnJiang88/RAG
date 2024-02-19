@@ -70,7 +70,7 @@ def run_llm(vectordb, query: str) -> str:
     hf_llm = HuggingFacePipeline.from_model_id(
                 model_id="gpt2",  # mistralai/Mistral-7B-v0.1
                 task="text-generation",
-                pipeline_kwargs={"temperature": 0, "max_new_tokens": 300}
+                pipeline_kwargs={"max_new_tokens": 300}
             )
     
     # Create a RetrievalQA instance from a chain type with a specified retriever.
