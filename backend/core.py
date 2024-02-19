@@ -68,7 +68,7 @@ def run_llm(vectordb, query: str) -> str:
     # openai_llm = ChatOpenAI(temperature=0, verbose=True)
 
     hf_llm = HuggingFacePipeline.from_model_id(
-                model_id="mistralai/Mistral-7B-v0.1",  # pick another model with low latency
+                model_id="gpt2",  # mistralai/Mistral-7B-v0.1
                 task="text-generation",
                 pipeline_kwargs={"temperature": 0, "max_new_tokens": 300}
             )
