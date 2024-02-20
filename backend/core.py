@@ -1,7 +1,8 @@
 import os
 # from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings
-from langchain_community.llms import HuggingFacePipeline
+# from langchain_community.llms import HuggingFacePipeline
+from langchain_openai import ChatOpenAI
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import TextLoader
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
@@ -63,19 +64,24 @@ def get_faiss_vectordb(file: str):
 
 
 
-def run_llm(vectordb, query: str) -> str:
-    # Create an instance of the ChatOpenAI with specified settings.
-    # openai_llm = ChatOpenAI(temperature=0, verbose=True)
+def run_llm(api_key, vectordb, query: str) -> str:
 
-    hf_llm = HuggingFacePipeline.from_model_id(
-                model_id="gpt2",  # mistralai/Mistral-7B-v0.1
-                task="text-generation",
-                pipeline_kwargs={"max_new_tokens": 300}
-            )
-    
+    # hf_llm = HuggingFacePipeline.from_model_id(
+    #             model_id="gpt2",  # mistralai/Mistral-7B-v0.1
+    #             task="text-generation",
+    #             pipeline_kwargs={"max_new_tokens": 300}
+    #         )
+
+    os.environ["OPENAI_API_KEY"] = api_key
+    # Create an instance of the ChatOpenAI with specified settings.
+    openai_llm = ChatOpenAI(temperature=0, verbose=True)
+
     # Create a RetrievalQA instance from a chain type with a specified retriever.
     retrieval_qa = RetrievalQA.from_chain_type(
-        llm=hf_llm, chain_type="stuff", retriever=vectordb.as_retriever(search_type="similarity", search_kwargs={"k": 3})
+        llm=openai_llm, 
+        chain_type="stuff", 
+        retriever=vectordb.as_retriever(search_type="similarity", search_kwargs={"k": 3}),
+        return_source_documents=True
     )
     
     # Run a query using the RetrievalQA instance.
