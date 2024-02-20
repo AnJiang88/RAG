@@ -6,3 +6,4 @@ pypdf
 torch
 faiss-cpu
 numpy
+langchain_openai
