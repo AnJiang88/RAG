@@ -9,6 +9,7 @@ from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
 # from langchain_openai import OpenAIEmbeddings
 # from langchain_openai import ChatOpenAI
 
@@ -76,12 +77,26 @@ def run_llm(api_key, vectordb, query: str) -> str:
     # Create an instance of the ChatOpenAI with specified settings.
     openai_llm = ChatOpenAI(temperature=0, verbose=True)
 
+    prompt_template = """Use the following pieces of context to answer the question at the end. Please follow the following rules:
+    1. If you don't know the answer, don't try to make up an answer. Just say "I can't find the final answer but you may want to check the following links".
+    2. If you find the answer, write the answer in a concise way with five sentences maximum.
+
+    {context}
+
+    Question: {question}
+
+    Helpful Answer:
+    """
+
+    PROMPT = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
+
     # Create a RetrievalQA instance from a chain type with a specified retriever.
     retrieval_qa = RetrievalQA.from_chain_type(
         llm=openai_llm, 
         chain_type="stuff", 
         retriever=vectordb.as_retriever(search_type="similarity", search_kwargs={"k": 3}),
-        return_source_documents=True
+        return_source_documents=True,
+        chain_type_kwargs={"prompt": PROMPT}
     )
     
     # Run a query using the RetrievalQA instance.
